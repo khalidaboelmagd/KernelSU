@@ -56,13 +56,13 @@ jobs:
     - name: Get Version
       id: get_version
       run: |
-        cd KernelSU-Next
+        cd KernelSU
         git fetch --unshallow
         git pull
         git rev-list --count HEAD
         echo "VERSION=$(expr $(git rev-list --count HEAD) + 10200)" >> $GITHUB_OUTPUT
         cd ..
-    - name: Build KernelSU-Next
+    - name: Build KernelSU
       run: |
        export PATH=$(pwd)/clang/bin/:$(pwd)/aarch64/bin/:$PATH
        export ARCH=arm64
@@ -77,14 +77,14 @@ jobs:
     - name: Create AK3 zip for android 11
       run: |
        cd AnyKernel3
-       zip -r ../OP7-OOS11-KernelSU-Next-${{ steps.get_version.outputs.VERSION }}.zip *
+       zip -r ../OP7-OOS11-KernelSU-${{ steps.get_version.outputs.VERSION }}.zip *
        cd ..
     - name: Upload to Release
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          OP7-OOS11-KernelSU-Next-${{ steps.get_version.outputs.VERSION }}.zip
-        name: OnePlus7_KernelSU-Next-${{ steps.get_version.outputs.VERSION }}
+          OP7-OOS11-KernelSU-${{ steps.get_version.outputs.VERSION }}.zip
+        name: OnePlus7_KernelSU-${{ steps.get_version.outputs.VERSION }}
         tag_name: ${{ steps.get_version.outputs.VERSION }}
         body: |
           Device: Oneplus 7/Oneplus 7Pro/Oneplus 7T/Oneplus 7TPro
